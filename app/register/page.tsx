@@ -1,13 +1,23 @@
 "use client";
 
 import { useState } from "react";
+import { useRouter } from "next/navigation";
 
 export default function RegisterPage() {
+  const router = useRouter();
   const [nume, setNume] = useState("");
   const [email, setEmail] = useState("");
   const [parola, setParola] = useState("");
   const [msg, setMsg] = useState("");
   const [loading, setLoading] = useState(false);
+
+  const isValidEmail = (email: string): boolean => {
+    return (
+      email.includes("@") &&
+      email.includes(".") &&
+      email.indexOf("@") < email.lastIndexOf(".")
+    );
+  };
 
   async function onSubmit(e: React.FormEvent) {
     e.preventDefault();
@@ -16,6 +26,11 @@ export default function RegisterPage() {
 
     if (!nume || !email || !parola) {
       setMsg("Completează toate câmpurile.");
+      return;
+    }
+
+    if (!isValidEmail(email)) {
+      setMsg("Introduceți un email valid.");
       return;
     }
 
@@ -41,6 +56,9 @@ export default function RegisterPage() {
         setNume("");
         setEmail("");
         setParola("");
+        setTimeout(() => router.push("/login"));
+
+        return;
       } else {
         setMsg(data.message || "A apărut o eroare.");
       }
@@ -60,49 +78,48 @@ export default function RegisterPage() {
     >
       <form
         onSubmit={onSubmit}
-        className="p-6 border rounded-md space-y-4 w-96"
+        className="bg-white/100 p-6 rounded-md opacity-90 space-y-5"
       >
-        <h1 className="text-2xl font-bold text-center">Înregistrare</h1>
+        <h1 className="text-[30px] font-bold text-center mb-4">Înregistrare</h1>
 
         <div>
-          <label>Nume</label>
+          <label className="text-sm font-bold">Nume</label>
           <input
             type="text"
             value={nume}
             onChange={(e) => setNume(e.target.value)}
-            className="w-full border p-2 rounded"
+            className="w-full border rounded p-2 mt-1"
           />
         </div>
 
         <div>
-          <label>Email</label>
+          <label className="text-sm font-bold">Email</label>
           <input
-            type="email"
             value={email}
             onChange={(e) => setEmail(e.target.value)}
-            className="w-full border p-2 rounded"
+            className="w-full border rounded p-2 mt-1"
           />
         </div>
 
         <div>
-          <label>Parolă</label>
+          <label className="text-sm font-bold">Parolă</label>
           <input
             type="password"
             value={parola}
             onChange={(e) => setParola(e.target.value)}
-            className="w-full border p-2 rounded"
+            className="w-full border rounded p-2 mt-1"
           />
         </div>
 
         <button
           type="submit"
           disabled={loading}
-          className="w-full bg-blue-500 text-white p-2 rounded"
+          className="w-full font-bold bg-blue-400 hover:bg-blue-700 text-black p-2 rounded  disabled:opacity-50 mt-2"
         >
           {loading ? "Se trimite..." : "Înregistrează"}
         </button>
 
-        {msg && <p className="text-center font-bold">{msg}</p>}
+        {msg && <p className="text-center text-sm text-zinc-800">{msg}</p>}
       </form>
     </main>
   );

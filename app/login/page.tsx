@@ -1,7 +1,7 @@
 "use client";
 
 import { useState } from "react";
-
+import Link from "next/link";
 export default function LoginPage() {
   const [email, setEmail] = useState("");
   const [parola, setParola] = useState("");
@@ -48,49 +48,52 @@ export default function LoginPage() {
       setLoading(false);
     }
   }
-
   return (
     <main
-      className="min-h-screen flex justify-center items-center bg-cover bg-center bg-no-repeat"
-      style={{
-        backgroundImage: "url('/registerBackground.png')",
-      }}
+      className="min-h-screen flex items-center justify-center p-4 bg-cover bg-center"
+      style={{ backgroundImage: "url('/registerBackground.png')" }}
     >
       <form
         onSubmit={onSubmit}
-        className="p-6 border rounded-md space-y-4 w-96"
+        className="bg-white/100 p-6 rounded-md opacity-90 space-y-5"
       >
-        <h1 className="text-2xl font-bold text-center">Logare</h1>
+        <h1 className="text-[30px] font-bold text-center mb-4">Logare</h1>
 
         <div>
-          <label>Email</label>
+          <label className="text-sm font-bold">Email</label>
           <input
-            type="email"
             value={email}
             onChange={(e) => setEmail(e.target.value)}
-            className="w-full border p-2 rounded"
+            className="w-full border rounded p-2 mt-1"
           />
         </div>
 
         <div>
-          <label>Parolă</label>
+          <label className="text-sm font-bold">Parolă</label>
           <input
             type="password"
             value={parola}
             onChange={(e) => setParola(e.target.value)}
-            className="w-full border p-2 rounded"
+            className="w-full border rounded p-2 mt-1"
           />
         </div>
 
         <button
           type="submit"
           disabled={loading}
-          className="w-full bg-blue-500 text-white p-2 rounded"
+          className="w-full font-bold bg-blue-400 hover:bg-blue-700 text-black p-2 rounded  disabled:opacity-50 mt-2"
         >
-          {loading ? "Se trimite..." : "Logare"}
+          {loading ? "Se trimite..." : "Conectare"}
         </button>
 
-        {msg && <p className="text-center font-bold">{msg}</p>}
+        {msg && <p className="text-center text-sm text-zinc-700">{msg}</p>}
+
+        <p className="text-center text-sm text-zinc-800 ">
+          Nu ai cont?{" "}
+          <Link href="/register" className=" font-semibold hover:underline">
+            Înregistrază-te
+          </Link>
+        </p>
       </form>
     </main>
   );
