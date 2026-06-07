@@ -67,6 +67,42 @@ export default function AprobareItPage() {
     }
   }
 
+  async function respingeComanda(id: number) {
+    const comentariu = prompt("Introdu motivul respingerii:");
+    if (!comentariu) {
+      return;
+    }
+
+    try {
+      const token = localStorage.getItem("token");
+
+      const response = await fetch(
+        `http://localhost:3000/comenzi/${id}/respingere`,
+        {
+          method: "PATCH",
+          headers: {
+            Authorization: `Bearer ${token}`,
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify({
+            comentariu,
+          }),
+        },
+      );
+
+      const data = await response.json();
+
+      if (response.ok) {
+        alert("Comanda a fost respinsă!");
+        getComenzi();
+      } else {
+        alert(data.message);
+      }
+    } catch (error) {
+      alert("Eroare la respingere");
+    }
+  }
+
   useEffect(() => {
     getComenzi();
   }, []);
@@ -104,12 +140,21 @@ export default function AprobareItPage() {
                 <span>{comanda.suma} USD</span>
               </div>
 
-              <button
-                onClick={() => aprobaComanda(comanda.id)}
-                className="font-bold bg-blue-400 hover:bg-blue-700 text-black p-2 rounded-xl disabled:opacity-50 mt-2"
-              >
-                Aprobă
-              </button>
+              <div className="flex gap-80 mt-2">
+                <button
+                  onClick={() => aprobaComanda(comanda.id)}
+                  className="font-bold bg-blue-400 hover:bg-blue-700 text-black p-2 rounded-xl disabled:opacity-50 mt-2"
+                >
+                  Aprobă
+                </button>
+
+                <button
+                  onClick={() => respingeComanda(comanda.id)}
+                  className="font-bold bg-red-400 hover:bg-red-700 text-black p-2 rounded-xl disabled:opacity-50 mt-2"
+                >
+                  Respinge
+                </button>
+              </div>
             </div>
           ))}
         </div>

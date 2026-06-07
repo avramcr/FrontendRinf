@@ -86,10 +86,19 @@ export default function GetPage() {
                 <span>{comanda.suma} USD</span>
               </div>
 
-              {comanda.status === "NECESITA_RELUCARE " && (
+              {comanda.comentariuRespingere != null && (
+                <div className="mt-3 p-3 bg-gray-100 rounded-md">
+                  <p className="font-medium">Comentariu:</p>
+                  <p className="text-gray-700">
+                    {comanda.comentariuRespingere}
+                  </p>
+                </div>
+              )}
+
+              {comanda.status === "NECESITA_RELUCRARE" && (
                 <Link
                   href={`/editOrder/${comanda.id}`}
-                  className="inline-block mt-4 bg-yellow-400 hover:bg-yellow-500 text-black font-semibold px-4 py-2 rounded-lg"
+                  className="inline-block mt-4 font-bold bg-blue-400 hover:bg-blue-700 text-black p-2 rounded-xl"
                 >
                   Editează și retrimite
                 </Link>
