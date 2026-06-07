@@ -47,6 +47,22 @@ export default function GetPage() {
       className="min-h-screen p-4 bg-cover bg-center"
       style={{ backgroundImage: "url('/registerBackground.png')" }}
     >
+      <div className="absolute top-4 right-4 flex gap-2">
+        <Link
+          href="/createOrder"
+          className=" font-bold bg-blue-400 hover:bg-blue-700 text-black p-2 rounded-xl disabled:opacity-50 mt-2"
+        >
+          Comandă nouă
+        </Link>
+
+        <Link
+          href="/login"
+          className="font-bold bg-blue-400 hover:bg-blue-700 text-black p-2 rounded-xl disabled:opacity-50 mt-2"
+        >
+          Deconectează-te
+        </Link>
+      </div>
+
       <div className="p-6 max-w-6xl w-full mx-auto mt-10">
         <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
           {comenzi.map((comanda: any) => (
@@ -57,6 +73,8 @@ export default function GetPage() {
               <h3 className="font-semibold text-2xl mb-1">{comanda.titlu}</h3>
 
               <p className="text-md text-gray-700 mb-2">{comanda.descriere}</p>
+
+              <h4 className="text-md text-gray-700 mb-2">{comanda.status}</h4>
 
               <div className="text-sm text-gray-600 flex gap-2">
                 <span>{comanda.categorie}</span>
