@@ -2,12 +2,12 @@
 
 import { useState } from "react";
 import Link from "next/link";
-import { useRouter } from "next/navigation";
 
-export default function LoginPage() {
-  const router = useRouter();
-  const [email, setEmail] = useState("");
-  const [parola, setParola] = useState("");
+export default function CreatePage() {
+  const [titlu, setTitlu] = useState("");
+  const [descriere, setDescriere] = useState("");
+  const [categorie, setCategorie] = useState("");
+  const [suma, setSuma] = useState("");
   const [msg, setMsg] = useState("");
   const [loading, setLoading] = useState(false);
 
@@ -16,7 +16,7 @@ export default function LoginPage() {
 
     setMsg("");
 
-    if (!email || !parola) {
+    if (!titlu || !descriere || !categorie || !suma) {
       setMsg("Completează toate câmpurile.");
       return;
     }
@@ -24,31 +24,29 @@ export default function LoginPage() {
     try {
       setLoading(true);
 
-      const response = await fetch("http://localhost:3000/utilizatori/login", {
+      const response = await fetch("http://localhost:3000/comenzi", {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
         },
         body: JSON.stringify({
-          email,
-          parola,
+          titlu: titlu,
+          descriere: descriere,
+          categorie: categorie,
+          suma: Number(suma),
         }),
       });
 
       const data = await response.json();
 
-      //console.log("status", response.status);
-      // console.log("data", data);
-
-      localStorage.setItem("token", data.access_token);
-      localStorage.setItem("utilizatorId", data.utilizator.id);
-
       if (response.ok) {
-        setMsg("Utilizator creat cu succes!");
+        setMsg("Comandă creată cu succes!");
 
-        setEmail("");
-        setParola("");
-        setTimeout(() => router.push("/createOrder"));
+        setTitlu("");
+        setDescriere("");
+        setCategorie("");
+        setSuma("");
+        setTimeout(() => router.push("/login"));
       } else {
         setMsg(data.message || "A apărut o eroare.");
       }
@@ -67,23 +65,43 @@ export default function LoginPage() {
         onSubmit={onSubmit}
         className="bg-white/100 p-6 rounded-md opacity-90 space-y-5"
       >
-        <h1 className="text-[30px] font-bold text-center mb-4">Logare</h1>
+        <h1 className="text-[30px] font-bold text-center mb-4">
+          Adaugă comandă
+        </h1>
 
         <div>
-          <label className="text-sm font-bold">Email</label>
+          <label className="text-sm font-bold">Titlu</label>
           <input
-            value={email}
-            onChange={(e) => setEmail(e.target.value)}
+            value={titlu}
+            onChange={(e) => setTitlu(e.target.value)}
             className="w-full border rounded p-2 mt-1"
           />
         </div>
 
         <div>
-          <label className="text-sm font-bold">Parolă</label>
+          <label className="text-sm font-bold">Descriere</label>
           <input
-            type="password"
-            value={parola}
-            onChange={(e) => setParola(e.target.value)}
+            value={descriere}
+            onChange={(e) => setDescriere(e.target.value)}
+            className="w-full border rounded p-2 mt-1"
+          />
+        </div>
+
+        <div>
+          <label className=" text-sm font-bold">Categorie</label>
+          <input
+            value={categorie}
+            onChange={(e) => setCategorie(e.target.value)}
+            className="w-full border rounded p-2 mt-1"
+          />
+        </div>
+
+        <div>
+          <label className="text-sm font-bold">Suma</label>
+          <input
+            type="number"
+            value={suma}
+            onChange={(e) => setSuma(e.target.value)}
             className="w-full border rounded p-2 mt-1"
           />
         </div>
