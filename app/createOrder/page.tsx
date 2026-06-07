@@ -24,10 +24,13 @@ export default function CreatePage() {
     try {
       setLoading(true);
 
+      const token = localStorage.getItem("token");
+
       const response = await fetch("http://localhost:3000/comenzi", {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
+          Authorization: `Bearer ${token}`,
         },
         body: JSON.stringify({
           titlu: titlu,
@@ -46,7 +49,6 @@ export default function CreatePage() {
         setDescriere("");
         setCategorie("");
         setSuma("");
-        setTimeout(() => router.push("/login"));
       } else {
         setMsg(data.message || "A apărut o eroare.");
       }
@@ -111,17 +113,10 @@ export default function CreatePage() {
           disabled={loading}
           className="w-full font-bold bg-blue-400 hover:bg-blue-700 text-black p-2 rounded  disabled:opacity-50 mt-2"
         >
-          {loading ? "Se trimite..." : "Conectare"}
+          {loading ? "Se trimite..." : "Trimite comanda"}
         </button>
 
         {msg && <p className="text-center text-sm text-zinc-700">{msg}</p>}
-
-        <p className="text-center text-sm text-zinc-800 ">
-          Nu ai cont?{" "}
-          <Link href="/register" className=" font-semibold hover:underline">
-            Înregistrază-te
-          </Link>
-        </p>
       </form>
     </main>
   );

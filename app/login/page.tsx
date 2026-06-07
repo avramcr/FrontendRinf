@@ -37,8 +37,8 @@ export default function LoginPage() {
 
       const data = await response.json();
 
-      //console.log("status", response.status);
-      // console.log("data", data);
+      console.log("status", response.status);
+      console.log("data", data);
 
       localStorage.setItem("token", data.access_token);
       localStorage.setItem("utilizatorId", data.utilizator.id);
@@ -48,7 +48,7 @@ export default function LoginPage() {
 
         setEmail("");
         setParola("");
-        setTimeout(() => router.push("/createOrder"));
+        setTimeout(() => router.push("/getOrder"));
       } else {
         setMsg(data.message || "A apărut o eroare.");
       }
