@@ -6,8 +6,8 @@ GitHub: [https://github.com/avramcr/FrontendRinf]
 ## Instalare
 
 ```bash
-git clone [https://github.com/avramcr/FrontendRinf]
-cd [FrontendRinf]
+git clone https://github.com/avramcr/FrontendRinf
+cd FrontendRinf
 npm install
 ```
 
