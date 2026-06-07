@@ -55,7 +55,7 @@ export default function LoginPage() {
           } else if (decoded.rol === "MANAGER") {
             router.push("/aprobareManager");
           } else if (decoded.rol === "IT") {
-            router.push("/aprobareIT");
+            router.push("/aprobareIt");
           } else if (decoded.rol === "FINANCIAR") {
             router.push("/aprobareFinanciar");
           }

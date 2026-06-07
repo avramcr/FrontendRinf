@@ -4,7 +4,7 @@ import { useEffect, useReducer, useState } from "react";
 import Link from "next/link";
 import { useRouter } from "next/router";
 
-export default function AprobareManagerPage() {
+export default function AprobareItPage() {
   const [comenzi, setComenzi] = useState<any[]>([]);
   const [msg, setMsg] = useState("");
   const [loading, setLoading] = useState(false);
@@ -18,7 +18,7 @@ export default function AprobareManagerPage() {
       const token = localStorage.getItem("token");
 
       const response = await fetch(
-        "http://localhost:3000/comenzi/comenziManager",
+        "http://localhost:3000/comenzi/comenziDepartamentIt",
         {
           method: "GET",
           headers: {
@@ -46,7 +46,7 @@ export default function AprobareManagerPage() {
       const token = localStorage.getItem("token");
 
       const response = await fetch(
-        `http://localhost:3000/comenzi/${id}/aprobare-managerComanda`,
+        `http://localhost:3000/comenzi/${id}/aprobare-it`,
         {
           method: "PATCH",
           headers: {
