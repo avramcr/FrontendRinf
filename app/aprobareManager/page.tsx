@@ -4,7 +4,7 @@ import { useEffect, useReducer, useState } from "react";
 import Link from "next/link";
 import { useRouter } from "next/router";
 
-export default function GetPage() {
+export default function AprobareManagerPage() {
   const [comenzi, setComenzi] = useState<any[]>([]);
   const [msg, setMsg] = useState("");
   const [loading, setLoading] = useState(false);
@@ -17,18 +17,17 @@ export default function GetPage() {
 
       const token = localStorage.getItem("token");
 
-      const response = await fetch("http://localhost:3000/comenzi/utilizator", {
-        method: "GET",
-        headers: {
-          Authorization: `Bearer ${token}`,
+      const response = await fetch(
+        "http://localhost:3000/comenzi/comenziManager",
+        {
+          method: "GET",
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
         },
-      });
+      );
 
       const data = await response.json();
-
-      console.log("response ok:", response.ok);
-      console.log("status:", response.status);
-      console.log("data:", data);
 
       if (response.ok) {
         setComenzi(data);
@@ -42,6 +41,33 @@ export default function GetPage() {
     }
   }
 
+  async function aprobaComanda(id: number) {
+    try {
+      const token = localStorage.getItem("token");
+
+      const response = await fetch(
+        `http://localhost:3000/comenzi/${id}/aprobare-managerComanda`,
+        {
+          method: "PATCH",
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
+        },
+      );
+
+      const data = await response.json();
+
+      if (response.ok) {
+        alert("Comanda a fost aprobată!");
+        getComenzi();
+      } else {
+        alert(data.message);
+      }
+    } catch (error) {
+      alert("Eroare la aprobare");
+    }
+  }
+
   useEffect(() => {
     getComenzi();
   }, []);
@@ -52,13 +78,6 @@ export default function GetPage() {
       style={{ backgroundImage: "url('/registerBackground.png')" }}
     >
       <div className="absolute top-4 right-4 flex gap-2">
-        <Link
-          href="/createOrder"
-          className=" font-bold bg-blue-400 hover:bg-blue-700 text-black p-2 rounded-xl disabled:opacity-50 mt-2"
-        >
-          Comandă nouă
-        </Link>
-
         <Link
           href="/login"
           className="font-bold bg-blue-400 hover:bg-blue-700 text-black p-2 rounded-xl disabled:opacity-50 mt-2"
@@ -86,14 +105,12 @@ export default function GetPage() {
                 <span>{comanda.suma} USD</span>
               </div>
 
-              {comanda.status === "NECESITA_RELUCARE " && (
-                <Link
-                  href={`/editOrder/${comanda.id}`}
-                  className="inline-block mt-4 bg-yellow-400 hover:bg-yellow-500 text-black font-semibold px-4 py-2 rounded-lg"
-                >
-                  Editează și retrimite
-                </Link>
-              )}
+              <button
+                onClick={() => aprobaComanda(comanda.id)}
+                className="font-bold bg-blue-400 hover:bg-blue-700 text-black p-2 rounded-xl disabled:opacity-50 mt-2"
+              >
+                Aprobă
+              </button>
             </div>
           ))}
         </div>

@@ -3,7 +3,7 @@
 import { useState } from "react";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
-
+import { jwtDecode } from "jwt-decode";
 export default function LoginPage() {
   const router = useRouter();
   const [email, setEmail] = useState("");
@@ -44,11 +44,22 @@ export default function LoginPage() {
       localStorage.setItem("utilizatorId", data.utilizator.id);
 
       if (response.ok) {
+        const decoded: any = jwtDecode(data.access_token);
         setMsg("Utilizator creat cu succes!");
 
         setEmail("");
         setParola("");
-        setTimeout(() => router.push("/getOrder"));
+        setTimeout(() => {
+          if (decoded.rol === "CLIENT") {
+            router.push("/getOrder");
+          } else if (decoded.rol === "MANAGER") {
+            router.push("/aprobareManager");
+          } else if (decoded.rol === "IT") {
+            router.push("/aprobareIT");
+          } else if (decoded.rol === "FINANCIAR") {
+            router.push("/aprobareFinanciar");
+          }
+        }, 1000);
       } else {
         setMsg(data.message || "A apărut o eroare.");
       }
