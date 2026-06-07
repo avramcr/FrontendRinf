@@ -58,6 +58,8 @@ export default function LoginPage() {
             router.push("/aprobareIt");
           } else if (decoded.rol === "FINANCIAR") {
             router.push("/aprobareFinanciar");
+          } else if (decoded.rol === "ADMIN") {
+            router.push("/admin");
           }
         }, 1000);
       } else {
